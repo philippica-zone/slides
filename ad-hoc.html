@@ -1,0 +1,77 @@
+<!doctype html>  <head> <style>.hljs-ln{color:#e9e9f4}td.hljs-ln-code{white-space:pre-wrap}.no-bottom td{border-bottom:0!important}.segment{width:50%;display:flex;flex-wrap:nowrap;flex-direction:row;justify-content:space-between;margin-left:25%;border-top:1px solid #fff}</style> <script> const work = () => {
+  Reveal.initialize({
+    plugins: [  RevealMarkdown, RevealMath.KaTeX, RevealHighlight  ],
+
+  });
+}
+const onError = () => {
+  const addScript = (src) => {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    script.onload = onLoad;
+    var root = document.getElementsByTagName('script')[0];
+    root.parentNode.insertBefore(script, root);
+  }
+  const addLink = (src) => {
+    var script = document.createElement('link');
+    script.rel = 'stylesheet';
+    script.href = src;
+    var root = document.getElementsByTagName('link')[0];
+    root.parentNode.insertBefore(script, root);
+  }
+  if(window.hasOnError === true) {
+    return;
+  }
+  window.hasOnError = true;
+  addScript('https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js');
+  addLink('https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css');
+  addLink('https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css');
+}
+
+const onLoad = () => {
+  work();
+} </script> <link href=./dist/monokai.css onerror=onError() rel=stylesheet> <link href=./dist/reveal.css onerror=onError() rel=stylesheet> <link href=./dist/black.css onerror=onError() rel=stylesheet> </head> <body> <div class=reveal> <div class=slides> <section data-auto-animate> <h1>整数分块</h1> <h3>1. 如何求一个数N的所有因数, 时间复杂度是多少?</h3> </section> <section data-auto-animate> <h1>整数分块</h1> <h3>1. 如何求一个数N的所有因数, 时间复杂度是多少?</h3> <h3>2. 如何求 $$ f(n) = \sum_{i=1}^{n} \left \lfloor \frac{n}{i} \right \rfloor $$ </h3> <h4>例如 f(5) = $$ \left\lfloor\frac{5}{1}\right\rfloor + \left\lfloor\frac{5}{2}\right\rfloor +\left\lfloor\frac{5}{3}\right\rfloor +\left\lfloor\frac{5}{4}\right\rfloor +\left\lfloor\frac{5}{5}\right\rfloor $$ = 5 + 2 + 1 + 1 + 1</h4> </section> <!-- 作者philipica --><!-- 联系我philippicapyj@gmail.com --> <section data-auto-animate> <h3>试着计算一下f(<span contenteditable=true oninput=nChange(this)>100</span>)</h3> <table id=numberBlock style=width:50%> <tr> <td>$$ i $$</td> <td id=intro>$$ \left \lfloor \frac{100}{i} \right \rfloor $$</td> <td>个数</td> </tr> </table> <script> const makeTable = (n) => {
+              const tb = document.getElementById("numberBlock");
+              const len = tb.childElementCount;
+              for(let i = 1; i < len; i++) {
+                  tb.children[1].remove();
+              }
+              for(let i = 1; i * i < n; i++) {
+                  const r = parseInt(n/i);
+                  const l = parseInt(n/(i+1)+1);
+                  tb.innerHTML += `<tr><td>${l}~${r}</td><td>${i}</td><td>${r-l+1}</td></tr>`
+              }
+          }
+          makeTable(100);
+          const nChange = (e) => {
+              makeTable(parseInt(e.innerHTML));
+              document.querySelector('#intro .minner>.mord>.mfrac>.vlist-t .vlist > span:nth-child(3) .mord .mord').innerHTML = e.innerHTML;
+          } </script> </section> <section data-auto-animate> <h1>筛法</h1> <h3>1. 如何求1~100内所有的质数?</h3> </section> <section data-auto-animate> <h1>筛法</h1> <h3>1. 如何求1~100内所有的质数?</h3> <table id=prime> </table> <script> const mkTable = (n) => {
+              const tb = document.getElementById("prime");
+              for(let i = 2; i <= n; i+=10) {
+                  const t = [];
+                  for(let j = i; j <= i+9 && j <= n; j++) {
+                      t.push(`<td id="number-${j}" onClick="numberOnClick(this)">${j}</td>`);
+                  }
+                  tb.innerHTML += "<tr>"+t.join("")+"</tr>"
+              }
+          }
+          mkTable(100);
+          const numberOnClick = (e) =>{
+              const current = parseInt(e.innerHTML);
+              for(let i = 2; i * current <= 100; i++) {
+                  const u = i * current;
+                  const grid = document.getElementById(`number-${u}`);
+                  grid.innerHTML = `<del>${grid.innerHTML}</del>`;
+                  grid.style.color = 'red';
+              }
+          } </script> </section> <section> <h1>筛法</h1> <pre><code class=language-c++ data-line-numbers data-noescape>for(int i = 2; i &lt;= 100; i++) {
+if(isPrime[i] == true) {
+  for(int j = i*2; j &lt;= 100; j+= i) {
+      isPrime[j] = false;
+  }
+  prime.push(i);
+}
+}
+          </code></pre> </section> </div> </div> <script src=./dist/markdown.js></script> <script src=./dist/math.js></script> <script src=./dist/highlight.js></script> <script src=./dist/reveal.js onerror=onError() onload=onLoad()></script> <script> const hljs = RevealHighlight().hljs </script> <script></script> 

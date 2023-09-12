@@ -1,0 +1,50 @@
+<!doctypehtml>  <head> <style>.hljs-ln{color:#e9e9f4}td.hljs-ln-code{white-space:pre-wrap}.no-bottom td{border-bottom:0!important}#queens td{background-color:#fff;width:40px;height:40px;padding:0;border:1px solid #000}</style> <script> const work = () => {
+  Reveal.initialize({
+    plugins: [  RevealMarkdown, RevealMath.KaTeX, RevealHighlight  ],
+
+  });
+}
+const onError = () => {
+  const addScript = (src) => {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    script.onload = onLoad;
+    var root = document.getElementsByTagName('script')[0];
+    root.parentNode.insertBefore(script, root);
+  }
+  const addLink = (src) => {
+    var script = document.createElement('link');
+    script.rel = 'stylesheet';
+    script.href = src;
+    var root = document.getElementsByTagName('link')[0];
+    root.parentNode.insertBefore(script, root);
+  }
+  if(window.hasOnError === true) {
+    return;
+  }
+  window.hasOnError = true;
+  addScript('https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js');
+  addLink('https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css');
+  addLink('https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css');
+}
+
+const onLoad = () => {
+  work();
+} </script> <link href=./dist/monokai.css onerror=onError() rel=stylesheet> <link href=./dist/reveal.css onerror=onError() rel=stylesheet> <link href=./dist/black.css onerror=onError() rel=stylesheet> </head> <body> <div class=reveal> <div class=slides> <section> <h1>Search(搜索)</h1> </section> <section data-auto-animate> <h1>求全排列(Permutation)</h1> 题目大意： <h3> N的全排列是指1到N组成的所有不重复的数字序列，例如3的全排列是 </h3> <p>1 2 3</p> <p>1 3 2</p> <p>2 1 3</p> <p>2 3 1</p> <p>3 1 2</p> <p>3 2 1</p> </section> <section data-auto-animate> <h1>求全排列(Permutation)</h1> 题目大意： <h3> N的全排列是指1到N组成的所有不重复的数字序列，例如3的全排列是 </h3> <p>1 2 3</p> <p>1 3 2</p> <p>2 1 3</p> <p>2 3 1</p> <p>3 1 2</p> <p>3 2 1</p> <a href="./tools/svgtree2.html?type=rootedTree&content=1 2\n1 3\n1 4\n1 5\n2 6\n2 7\n2 8 \n6 9\n6 10\n9 11\n10 12\n7 13\n7 14\n13 15\n14 16\n8 17\n8 18\n17 19\n18 20\n3 21\n3 22\n3 23\n4 24\n4 25\n4 26\n5 27\n5 28\n5 29\n21 30\n21 31\n30 32\n31 34&nodeWeight=_,_,_,_ 1,_,_,_ 2,_,_,_ 3,_,_,_ 4,_,_,_ 1,2,_,_ 1,3,_,_ 1,4,_,_ 1,2,3,_ 1,2,4,_ 1,2,3,4 1,2,4,3 1,3,2,_ 1,3,4,_ 1,3,2,4 1,3,4,2 1,4,2,_ 1,4,3,_ 1,4,2,3 1,4,3,2 2,1,_,_ 2,3,_,_ 2,4,_,_ 3,1,_,_ 3,2,_,_ 3,4,_,_ 4,1,_,_ 4,2,_,_ 4,3,_,_ 2,1,3,_ 2,1,4,_ 2,1,3,4 2,1,4,3&swapNode=true"target=_blank>本质是遍历一棵树</a> </section> <section data-auto-animate> <h1>求全排列(Permutation)</h1> 题目大意： <h3> N的全排列是指1到N组成的所有不重复的数字序列，例如3的全排列是 </h3> <p>1 2 3</p> <p>1 3 2</p> <p>2 1 3</p> <p>2 3 1</p> <p>3 1 2</p> <p>3 2 1</p> <a href="./tools/svgtree2.html?type=rootedTree&content=1 2\n1 3\n1 4\n1 5\n2 6\n2 7\n2 8 \n6 9\n6 10\n9 11\n10 12\n7 13\n7 14\n13 15\n14 16\n8 17\n8 18\n17 19\n18 20\n3 21\n3 22\n3 23\n4 24\n4 25\n4 26\n5 27\n5 28\n5 29\n21 30\n21 31\n30 32\n31 34&nodeWeight=_,_,_,_ 1,_,_,_ 2,_,_,_ 3,_,_,_ 4,_,_,_ 1,2,_,_ 1,3,_,_ 1,4,_,_ 1,2,3,_ 1,2,4,_ 1,2,3,4 1,2,4,3 1,3,2,_ 1,3,4,_ 1,3,2,4 1,3,4,2 1,4,2,_ 1,4,3,_ 1,4,2,3 1,4,3,2 2,1,_,_ 2,3,_,_ 2,4,_,_ 3,1,_,_ 3,2,_,_ 3,4,_,_ 4,1,_,_ 4,2,_,_ 4,3,_,_ 2,1,3,_ 2,1,4,_ 2,1,3,4 2,1,4,3&swapNode=true"target=_blank>本质是遍历一棵树</a> </section> <section> <pre><code class=language-c++ data-line-numbers data-noescape>public void dfs(int pos, int bucket[], int ans[], int N)
+{
+if(pos == N) {
+for(int i = 1; i &lt;= N; i++) {
+  System.out.println(ans[i]);
+}
+}
+for(int i = 1; i &lt; N; i++) {
+if(!bucket[i]) {
+  bucket[i] = 1;
+  ans[pos] = i;
+  dfs(pos+1, bucket, N);
+  bucket[i] = 0;
+}
+}
+}        
+    </code></pre> </section> <section data-auto-animate> <h1>八皇后问题</h1> 题目大意： <h3> 8*8的国际象棋棋盘上放8个皇后，每个皇后能够攻击同一行，同一列，同意斜行的棋子，问8个皇后互相不能攻击的摆放方式共有多少种 </h3><!-- 作者philipica --><!-- 联系我philippicapyj@gmail.com --> <table id=queens> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> </table> <script>for(var btns=document.getElementsByTagName("td"),i=0;i<btns.length;i++)btns[i].onclick=function(){"pink"===this.style.backgroundColor?this.style.backgroundColor="white":this.style.backgroundColor="pink"}</script> </section> <section data-auto-animate> <h1>CCC 20 S2 - Escape Room (<a href=https://dmoj.ca/problem/ccc20s2>Dmoj</a>)</h1> 题目大意： <h3> 给定一个n*m的数字方阵，问能否从左上角走到右下角，你能从当前格子(x, y)走到(a,b)当且仅当(x，y)上的数字等于a*b </h3> </section> </div> </div> <script src=./dist/markdown.js></script> <script src=./dist/math.js></script> <script src=./dist/highlight.js></script> <script src=./dist/reveal.js onerror=onError() onload=onLoad()></script> <script> const hljs = RevealHighlight().hljs </script> <script></script> 
